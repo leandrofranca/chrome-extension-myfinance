@@ -1,0 +1,31 @@
+{
+  "manifest_version": 2,
+  "name": "Nubank - Exportador de faturas",
+  "description": "Essa extensão permite que faturas sejam exportadas em formato xls",
+  "version": "1.0",
+  "page_action": {
+    "default_icon": "icon.png"
+  },
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "declarativeContent",
+    "downloads"
+  ],
+  "content_scripts": [{
+    "matches": ["https://app.nubank.com.br/*"],
+    "js": ["content_nubank.js", "xlsx.full.min.js"]
+  }, {
+    "matches": ["https://nel.bnb.gov.br/InformacoesCartaoCredito/*"],
+    "js": ["content_nel_visaplatinum.js", "xlsx.full.min.js", "jquery-3.3.1.min.js"],
+    "all_frames": true
+  }, {
+    "matches": ["https://nel.bnb.gov.br/ext_cco_01*"],
+    "js": ["content_nel_extrato.js", "xlsx.full.min.js", "jquery-3.3.1.min.js"],
+    "all_frames": true
+  }],
+  "background": {
+    "scripts": ["bg.js"],
+    "persistent": false
+  }
+}
