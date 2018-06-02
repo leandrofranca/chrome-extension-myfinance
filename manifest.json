@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "name": "Geração de arquivos XML ou OFX",
+  "name": "Geração de arquivos XLS ou OFX",
   "description": "Essa extensão permite a exportação de faturas ou extrato do Nubank e Banco do Nordeste.",
   "version": "1.0",
   "page_action": {
