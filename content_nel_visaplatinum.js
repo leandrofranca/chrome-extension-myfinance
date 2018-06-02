@@ -6,22 +6,24 @@ chrome.runtime.onMessage.addListener(
 );
 
 function getData() {
-  var date, description, amount, charges_array, charges;
+  var date, description, amount, charges_array;
   charges_array = [
     ["Tipo", "Nº de Parcelas", "Quantia (R$)", "Descrição", "Data", "Categoria", "Nº do Documento", "Centro de Custo / Receita", "Cliente/Fornecedor", "Observação", "Produto", "Região"]
   ];
 
-  var monthYear = monthYearFormat($(".tablist li.current")[0].textContent.trim());
-  var year = getYear($(".tablist li.current")[0].textContent.trim());
+  var year = getYear($(".tablist li.current").get(0).textContent.trim());
 
   $(".abasInternas:visible .QuadroInformacao .table tr").each(function(index) {
     if ($(this).html().indexOf("colspan") == -1) {
-      amount = amountFormat($(this).children()[2].textContent.trim())
-      description = $(this).children()[1].textContent.trim()
-      date = dayMonthFormat($(this).children()[0].textContent.trim()) + "/" + year;
+      element = $(this).children();
+      amount = amountFormat(element[2].textContent.trim())
+      description = element[1].textContent.trim()
+      date = dayMonthFormat(element[0].textContent.trim()) + "/" + year;
       charges_array.push(["Normal", "", amount, description, date, "", "", "", "", "", "", ""]);
     }
   });
+
+  var monthYear = monthYearFormat($(".tablist li.current").get(0).textContent.trim());
 
   var wb = XLSX.utils.book_new(),
     ws = XLSX.utils.aoa_to_sheet(charges_array);

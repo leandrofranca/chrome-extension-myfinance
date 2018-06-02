@@ -1,8 +1,7 @@
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
   if (~tab.url.indexOf('https://app.nubank.com.br/#/bills')) {
     chrome.pageAction.show(tabId);
-  }
-  if (~tab.url.indexOf('https://nel.bnb.gov.br/')) {
+  } else if (~tab.url.indexOf('https://nel.bnb.gov.br/')) {
     chrome.pageAction.show(tabId);
   }
 });

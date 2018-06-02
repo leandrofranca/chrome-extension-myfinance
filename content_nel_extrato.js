@@ -43,15 +43,16 @@ function bankStatement(date, amount, description) {
 }
 
 function getData() {
-  var date, description, amount, doc;
+  var element, date, description, amount;
 
   var ofx = startOfx();
   $('#RetornoConsulta tbody tr').each(function(index) {
-    amount = amountFormat($(this).children()[3].textContent.trim())
-    description = $(this).children()[1].textContent.trim()
-    date = $(this).children()[0].textContent.trim();
-  });
+    element = $(this).children();
+    date = element[0].textContent.trim();
+    description = element[1].textContent.trim()
+    amount = amountFormat(element[3].textContent.trim())
     ofx += bankStatement(date, amount, description);
+  });
   ofx += endOfx();
 
   link = document.createElement("a");
