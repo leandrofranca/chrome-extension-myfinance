@@ -5,60 +5,36 @@ chrome.runtime.onMessage.addListener(
   }
 );
 
-function startOfx() {
-  return `
-OFXHEADER:100
-DATA:OFXSGML
-VERSION:102
-SECURITY:NONE
-ENCODING:USASCII
-CHARSET:1252
-COMPRESSION:NONE
-OLDFILEUID:NONE
-NEWFILEUID:NONE
-<OFX>
-<BANKMSGSRSV1>
-<STMTTRNRS>
-<STMTRS>
-<BANKTRANLIST>`;
-}
-
-function endOfx() {
-  return `
-</BANKTRANLIST>
-</STMTRS>
-</STMTTRNRS>
-</BANKMSGSRSV1>
-</OFX>`;
-}
-
-function bankStatement(date, amount, description) {
-  return `
-<STMTTRN>
-<TRNTYPE>OTHER</TRNTYPE>
-<DTPOSTED>${date}</DTPOSTED>
-<TRNAMT>${amount}</TRNAMT>
-<MEMO>${description}</MEMO>
-</STMTTRN>`;
-}
-
 function getData() {
-  var element, date, description, amount;
+  var tds, detail, type, client, date, doc, description, amount, charges_array;
+  charges_array = [
+    ["Tipo", "Quantia", "Data", "Mês de Competência", "Descrição", "Documento", "Categoria", "Cliente / Fornecedor", "Centro de Custo / Receita", "Transferência para", "Produto", "Região"]
+  ];
 
-  var ofx = startOfx();
   $('#RetornoConsulta tbody tr').each(function(index) {
-    element = $(this).children();
-    date = element[0].textContent.trim();
-    description = element[1].textContent.trim()
-    amount = amountFormat(element[3].textContent.trim())
-    ofx += bankStatement(date, amount, description);
-  });
-  ofx += endOfx();
+    tds = $(this).children();
 
-  link = document.createElement("a");
-  link.setAttribute("href", 'data:application/x-ofx,' + encodeURIComponent(ofx));
-  link.setAttribute("download", "extrato.ofx");
-  link.click();
+    date = tds[0].textContent.trim();
+    detail = $(tds).eq(1).children('span').children('span.TextoDetalheTransferenciaExtrato')
+    client = ""
+    if (detail.length > 0) {
+      client = $(detail)[0].textContent.trim();
+    }
+    description = tds[1].textContent.replace(client, "").trim();
+    doc = tds[2].textContent.trim();
+    amount = amountFormat(tds[3].textContent.trim());
+    if (amount > 0) {
+      type = "Crédito";
+    } else {
+      type = "Débito";
+    }
+    charges_array.push([type, amount, date, "", description, doc, "", client, "", "", "", ""]);
+  });
+
+  var wb = XLSX.utils.book_new(),
+    ws = XLSX.utils.aoa_to_sheet(charges_array);
+  XLSX.utils.book_append_sheet(wb, ws, "Extrato");
+  XLSX.writeFile(wb, "Extrato_NEL.xls");
 }
 
 function amountFormat(amount) {

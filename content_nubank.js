@@ -24,7 +24,7 @@ function getData() {
   var wb = XLSX.utils.book_new(),
     ws = XLSX.utils.aoa_to_sheet(charges_array);
   XLSX.utils.book_append_sheet(wb, ws, "Fatura " + vencimento);
-  XLSX.writeFile(wb, "fatura-" + vencimento + ".xls");
+  XLSX.writeFile(wb, "Fatura-Nubank-" + vencimento + ".xls");
 }
 
 function amountFormat(amount) {

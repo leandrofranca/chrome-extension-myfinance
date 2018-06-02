@@ -6,7 +6,7 @@ chrome.runtime.onMessage.addListener(
 );
 
 function getData() {
-  var date, description, amount, charges_array;
+  var element, date, description, amount, charges_array;
   charges_array = [
     ["Tipo", "Nº de Parcelas", "Quantia (R$)", "Descrição", "Data", "Categoria", "Nº do Documento", "Centro de Custo / Receita", "Cliente/Fornecedor", "Observação", "Produto", "Região"]
   ];
@@ -28,7 +28,7 @@ function getData() {
   var wb = XLSX.utils.book_new(),
     ws = XLSX.utils.aoa_to_sheet(charges_array);
   XLSX.utils.book_append_sheet(wb, ws, "Fatura " + monthYear);
-  XLSX.writeFile(wb, "fatura-" + monthYear + ".xls");
+  XLSX.writeFile(wb, "Fatura-Visa-Platinum-" + monthYear + ".xls");
 }
 
 function dayMonthFormat(date) {
