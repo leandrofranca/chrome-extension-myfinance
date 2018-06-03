@@ -28,7 +28,7 @@ function getData() {
     } else {
       type = "Débito";
     }
-    charges_array.push([type, amount, date, "", description, doc, "", client, "", "", "", ""]);
+    charges_array.push([type, amount, date, "", description, doc, "", client, "Banco do Nordeste", "", "", ""]);
   });
 
   var wb = XLSX.utils.book_new(),
