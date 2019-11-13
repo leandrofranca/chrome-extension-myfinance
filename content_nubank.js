@@ -1,5 +1,5 @@
 chrome.runtime.onMessage.addListener(
-  function(request, sender, sendResponse) {
+  function (request, sender, sendResponse) {
     getData();
     sendResponse();
   }
@@ -18,6 +18,8 @@ function getData() {
     date = normalizeDate($(charges).find(".date").get(i).textContent.trim());
     description = $(charges).find(".description").get(i).textContent.trim();
     amount = amountFormat($(charges).find(".amount").get(i).textContent.trim());
+    if (description == 'Pagamento recebido')
+      continue;
     charges_array.push(["Normal", "", amount, description, date, "", "", "", "", "", "", ""]);
   }
 
